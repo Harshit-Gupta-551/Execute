@@ -1,0 +1,37 @@
+import cv2
+import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+
+# Define the categories of clothing
+categories = ['shirt', 'pants', 'gown', 'dress']
+
+# Load the pre-trained model
+model = keras.models.load_model('clothing_recognition_model.h5')
+
+# Define a function to preprocess the image
+def preprocess_image(image_path):
+    img = cv2.imread(image_path)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = cv2.resize(img, (224, 224))
+    img = img / 255.0
+    return img
+
+# Define a function to predict the category of clothing
+def predict_clothing_category(image_path):
+    img = preprocess_image(image_path)
+    img = np.expand_dims(img, axis=0)
+    predictions = model.predict(img)[0]
+    category_index = np.argmax(predictions)
+    category = categories[category_index]
+    return category
+
+# Test the function with an example image
+image_path = 'example_image.jpg'
+category = predict_clothing_category(image_path)
+print('The clothing category of the image is:', category)
+
+
+//The code in this case loads a model that has already been trained to identify four types of clothing: shirts, pants, gowns, and dresses. The preprocess_image() method is defined in the code to resize the image to 224x224 pixels and normalize the pixel values. A method called predict_clothing_category() is also defined in the code to identify the type of clothing in an image. This function loads the image, applies preprocessing with the preprocess_image() function, and then uses the trained model to forecast the outcome. Then, the anticipated category is given back.
+
+Simply substitute the example picture path with the path to your own image in the code to use it.
